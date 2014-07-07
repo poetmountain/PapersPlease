@@ -1,10 +1,10 @@
-PapersPlease is a modular, extendable text validation library for iOS, written in Apple's Swift language. The Objective-C version of this library is [PMValidation](https://github.com/poetmountain/PMValidation/). PapersPlease comes with several common validation types for often-used tasks like validating registration forms, however it was architected to be easily extended with your own validation types.
+PapersPlease is a flexible, extendable text validation library for iOS, written in Apple's Swift language. The Objective-C version of this library is [PMValidation](https://github.com/poetmountain/PMValidation/). PapersPlease comes with several common validation types for often-used tasks like validating registration forms, however it was architected to be easily extended with your own validation types.
 
 ## Features
 
 * Validate individual string objects or listen to changes from UIKit objects
 * Modular – validation types can be used together to create complex validation constraints
-* Extensible - Easily create your own validation types by subclassing PMValidationType
+* Extensible - Easily create your own validation types by subclassing ValidatorType
 * Comes with several useful validation types to satisfy most validation needs
 * Easily implement form validation by using ValidationManager to register UITextField and UITextView objects
 
@@ -14,60 +14,69 @@ At its simplest, PapersPlease starts with an instance of ValidationUnit. Each Va
 
 Generally, a ValidationUnit handles the validation of one text object. When you are validating more than one text object, such as with a validation form, the ValidationManager class is useful. This class controls one or more ValidationUnit objects, providing an overall validation status and notification routing.
 
+While this library does function, the Swift language is in flux and so this library may change significantly over time until Swift gets to a stable place.
+
+
 ### The basics
 
 Here's a basic example, creating a string length constraint which passes validation while the string is between 4 and 8 characters.
 
-``` swift
-PMValidationLengthType *length_type = [PMValidationLengthType validator];
-length_type.minimumCharacters = 4;
-length_type.maximumCharacters = 8;
+``` Swift
+let length_type:ValidatorLengthType = ValidatorLengthType(minimumCharacters:4, maximumCharacters:8)
 
-PMValidationUnit *unit = [PMValidationUnit validationUnit];
+let unit:ValidationUnit = ValidationUnit(validatorTypes: [length_type], identifier: "unit")
 [unit registerValidationType:length_type];
 
 // get validation status update
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(validationStatusNotificationHandler:) name:PMValidationUnitUpdateNotification object:unit];
+NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusChange:"), name: ValidationUnitUpdateNotification, object: unit)
 		
 // listen for validation status updates    
-- (void)validationStatusNotificationHandler:(NSNotification *)notification {
+@objc func validationUnitStatusChange(notification:NSNotification) {
     
-  PMValidationUnit *unit = (PMValidationUnit *)notification.object;
-
-  if (!unit.isValid) {
-  	NSDictionary *errors = [notification.userInfo valueForKey:@"errors"];
-  }  
+    let unit:ValidationUnit = notification.object as ValidationUnit
+    NSLog("\(unit.identifier) is \(unit.valid)")
     
 }
 
-
 // validate the string 
-[unit validateText:@"Velvet Underground"];
+unit.validateText("Velvet Underground")
 ```
 
-That example only uses one validation type class, but you can add as many as you want to create very complex validation tests. Of course, power users may want to take advantage of the PMValidationRegexType class, which allows use of a regular expression as a validation test. For complex use cases this can be preferable – PMValidationEmailType uses a regular expression internally – but using more basic type classes together can provide greater readability. YMMV.
+That example only uses one validation type class, but you can add as many as you want to create very complex validation tests. Of course, power users may want to take advantage of the ValidatorRegexType class, which allows use of a regular expression as a validation test. For complex use cases this can be preferable – ValidatorEmailType uses a regular expression internally – but using more basic type classes together can provide greater readability. YMMV.
 
-Validating static strings is cool, but let's hook up a PMValidationUnit to a UITextField so we can dynamically validate it as its text changes. While we could do this with just a PMValidationUnit, it's a bit easier to use PMValidationManager for this.
+Validating static strings is cool, but let's hook up a ValidationUnit to a UITextField so we can dynamically validate it as its text changes. While we could do this with just a ValidationUnit, it's a bit easier to use ValidationManager for this.
 
-```objective-c
-PMValidationManager *manager = [PMValidationManager validationManager];
-PMValidationEmailType *email_type = [PMValidationEmailType validator];
-PMValidationUnit *email_unit = [manager registerTextField:self.emailTextField
-                                       forValidationTypes:[NSSet setWithObjects:email_type, nil]
-                                               identifier:@"email"];
+``` Swift
+let manager = ValidationManager()
+let email_type:ValidatorEmailType = ValidatorEmailType()
+manager.registerTextField(self.textField, validationTypes: [email_type], identifier: "email")
                                                
-// get validation status update
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(validationStatusNotificationHandler:) name:PMValidationStatusNotification object:self.validationManager];
+// register for validation status updates
+NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationManagerStatusChange:"), name: ValidationStatusNotification, object: manager)
 		
-    
-- (void)validationStatusNotificationHandler:(NSNotification *)notification {
-    
-  BOOL is_valid = [(NSNumber *)[notification.userInfo objectForKey:@"status"] boolValue];
+// listen for manager's validation updates
+@objc func validationManagerStatusChange(notification:NSNotification) {
+  let user_info:NSDictionary = notification.userInfo
+  let status_num:NSNumber = user_info["status"] as NSNumber  
+  let is_valid:Bool = status_num.boolValue as Bool
+  
   if (!is_valid) {
-  	NSDictionary *units = [notification.userInfo objectForKey:@"units"];
-  	NSDictionary *email_dict = [units objectForKey:email_type.identifier];
-  	NSDictionary *email_errors = [email_dict objectForKey:@"errors"];
+  	let all_errors:NSDictionary = user_info["errors"] as NSDictionary
+  	let email_dict:NSDictionary = all_errors[email_type.identifier] as NSDictionary
+  	let email_errors:NSDictionary = email_dict["errors"] as NSDictionary
   } 
     
 }
 ```
+
+## Credits
+
+PapersPlease was created by [Brett Walker](https://twitter.com/petsound) of [Poet & Mountain](http://poetmountain.com).
+
+## Compatibility
+
+* Requires iOS 7.0 or later, Xcode 6+
+
+## License
+
+PapersPlease is licensed under the MIT License.

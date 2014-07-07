@@ -52,16 +52,27 @@ class ViewController: UIViewController {
     
     @objc func validationManagerStatusChange(notification:NSNotification) {
         
-        let mgr:ValidationManager = notification.object as ValidationManager
-        NSLog("manager is \(mgr.valid)")
+        let user_info:NSDictionary = notification.userInfo
+        NSLog("user info \(user_info)")
+
+        let status_num:NSNumber = user_info["status"] as NSNumber
+        let is_valid:Bool = status_num.boolValue as Bool
+
+        NSLog("manager is \(is_valid)")
         
-        if (mgr.valid) {
+        if (is_valid) {
             self.matchTextField.backgroundColor = UIColor.greenColor()
         } else {
             self.matchTextField.backgroundColor = UIColor.redColor()
+            
+            let all_errors:NSDictionary = user_info["errors"] as NSDictionary
+            let textfield:NSDictionary = all_errors["textfield"] as NSDictionary
+            let text_errors:NSDictionary = textfield["errors"] as NSDictionary
+            NSLog("textfield errors: \(text_errors)")
+            
         }
         
     }
-
+    
 }
 
