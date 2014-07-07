@@ -1,0 +1,83 @@
+//
+//  ValidatorLengthType.swift
+//  PapersPlease
+//
+//  Created by Brett Walker on 7/3/14.
+//  Copyright (c) 2014 Poet & Mountain, LLC. All rights reserved.
+//
+
+import Foundation
+
+let IgnoreLengthConstraint:Int = -1
+
+class LengthValidationStatus:ValidationStatus {
+    let minimumLengthError = "ValidationStatusMinimumLengthError"
+    let maximumLengthError = "ValidationStatusMaximumLengthError"
+}
+
+
+class ValidatorLengthType:ValidatorType {
+    
+    var minimumCharacters:Int = IgnoreLengthConstraint
+    var maximumCharacters:Int = IgnoreLengthConstraint
+    
+    init(minimumCharacters:Int, maximumCharacters:Int)  {
+        super.init()
+        self.minimumCharacters = minimumCharacters
+        self.maximumCharacters = maximumCharacters
+    }
+
+    let compareStatus = LengthValidationStatus()
+    override var status:LengthValidationStatus {
+        get {
+            return compareStatus
+        }
+    }
+    
+    override func isTextValid(text: String) -> Bool {
+        
+        var min_valid = true
+        var max_valid = true
+        
+        // determine min validity
+        if (self.minimumCharacters == IgnoreLengthConstraint) {
+            min_valid = true
+            
+        } else if (self.minimumCharacters >= 0) {
+            (countElements(text) >= self.minimumCharacters) ? (min_valid = true) : (min_valid = false)
+        }
+        
+        // determine max validity
+        if (self.maximumCharacters == IgnoreLengthConstraint) {
+            max_valid = true
+            
+        } else if (self.maximumCharacters >= 0 && self.maximumCharacters >= self.minimumCharacters) { // if max is less than min, the max constraint is ignored
+            (countElements(text) <= self.maximumCharacters) ? (max_valid = true) : (max_valid = false)
+        }
+        
+        (min_valid && max_valid) ? (valid = true) : (valid = false)
+        
+        
+        // update states
+        self.validationStates.removeAll()
+        if (self.valid) {
+            self.validationStates.append(self.status.valid)
+        } else {
+            if (!min_valid) {
+                self.validationStates.append(self.status.minimumLengthError)
+            }
+            if (!max_valid) {
+                self.validationStates.append(self.status.maximumLengthError)
+            }
+        }
+        
+        
+        return self.valid
+    }
+    
+    
+    class override func type() -> String {
+        return "ValidationTypeLength"
+    }
+    
+}
