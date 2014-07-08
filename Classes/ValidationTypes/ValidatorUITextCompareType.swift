@@ -67,7 +67,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         self.valid = self.isTextValid(self.lastStringValue)
         
         // post notification
-        let dict:Dictionary<String,Bool> = ["status" : self.valid]
+        let dict = ["status" : self.valid] as NSDictionary
         NSNotificationCenter.defaultCenter().postNotificationName(ValidatorUpdateNotification, object: self, userInfo: dict)
         
     }

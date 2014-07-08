@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         let email_type:ValidatorEmailType = ValidatorEmailType()
         let unit_validator_types = [length_type, email_type]
         
-        self.validationUnit = ValidationUnit(validatorTypes: unit_validator_types, identifier: "unit")
+        self.validationUnit = ValidationUnit(validatorTypes: unit_validator_types, identifier: "email")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusChange:"), name: ValidationUnitUpdateNotification, object: self.validationUnit)
         
         self.validationUnit.validateText("nico@somewhere.com")
@@ -46,19 +46,15 @@ class ViewController: UIViewController {
     @objc func validationUnitStatusChange(notification:NSNotification) {
         
         let unit:ValidationUnit = notification.object as ValidationUnit
-        NSLog("\(unit.identifier) is \(unit.valid)")
+        println("email validation: \(unit.identifier) is \(unit.valid) for \(unit.lastTextValue)")
         
     }
     
     @objc func validationManagerStatusChange(notification:NSNotification) {
         
-        let user_info:NSDictionary = notification.userInfo
-        NSLog("user info \(user_info)")
-
-        let status_num:NSNumber = user_info["status"] as NSNumber
-        let is_valid:Bool = status_num.boolValue as Bool
-
-        NSLog("manager is \(is_valid)")
+        let user_info = notification.userInfo as Dictionary
+        let is_valid = (user_info["status"] as NSNumber).boolValue as Bool
+        println("manager is \(is_valid)")
         
         if (is_valid) {
             self.matchTextField.backgroundColor = UIColor.greenColor()
@@ -68,7 +64,7 @@ class ViewController: UIViewController {
             let all_errors:NSDictionary = user_info["errors"] as NSDictionary
             let textfield:NSDictionary = all_errors["textfield"] as NSDictionary
             let text_errors:NSDictionary = textfield["errors"] as NSDictionary
-            NSLog("textfield errors: \(text_errors)")
+            println("textfield errors: \(text_errors)")
             
         }
         

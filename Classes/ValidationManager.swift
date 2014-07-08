@@ -14,17 +14,17 @@ let ValidationStatusNotification:String = "ValidationStatusNotification"
 
 class ValidationManager {
     
-    var validationUnits = Dictionary<String, ValidationUnit>()
+    var validationUnits = [String:ValidationUnit]()
     var valid:Bool = false
     
     
-    func registerTextField(textField:UITextField, validationTypes:ValidatorType[]=[], identifier:String?) -> ValidationUnit {
+    func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
         let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: textField.text, identifier: identifier?)
         
         return unit
     }
     
-    func registerTextView(textView:UITextView, validationTypes:ValidatorType[]=[], identifier:String?) -> ValidationUnit {
+    func registerTextView(textView:UITextView, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
         let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: textView.text, identifier: identifier?)
         
         return unit
@@ -32,7 +32,7 @@ class ValidationManager {
     
     
     
-    func registerObject(object:AnyObject, validationTypes:ValidatorType[]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
+    func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
         
         var unit_identifier:String! = identifier?
         if (!unit_identifier) {
@@ -53,6 +53,11 @@ class ValidationManager {
 
         
         return unit
+    }
+    
+    
+    func dealloc() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)        
     }
     
     
@@ -102,13 +107,12 @@ class ValidationManager {
         // collect all unit errors
         var total_errors = NSMutableDictionary.dictionary()
         for (key, unit) in self.validationUnits {
-            let errors:NSDictionary = ["valid" : NSNumber.numberWithBool(unit.valid), "errors" : unit.errors]
+            let errors = ["valid" : unit.valid, "errors" : unit.errors] as NSDictionary
             total_errors[unit.identifier] = errors
         }
         
         // post status update notification
-        //let status_dict:Dictionary<String, Any> = ["status" : self.valid, "errors" : total_errors]
-        let status_dict:NSDictionary = ["status" : NSNumber.numberWithBool(self.valid), "errors" : total_errors]
+        let status_dict = ["status" : self.valid, "errors" : total_errors] as NSDictionary
         NSNotificationCenter.defaultCenter().postNotificationName(ValidationStatusNotification, object: self, userInfo: status_dict)
         
     }

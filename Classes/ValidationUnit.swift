@@ -13,15 +13,15 @@ let ValidationUnitUpdateNotification:String = "ValidationUnitUpdateNotification"
 
 class ValidationUnit {
     
-    var registeredValidationTypes:ValidatorType[] = []
-    var errors = Dictionary<String, String[]>()
+    var registeredValidationTypes:[ValidatorType] = []
+    var errors = [String:[String]]()
     var identifier = ""
     var valid:Bool = false
     let validationQueue:dispatch_queue_t
     
     var lastTextValue:String = ""
     
-    init(validatorTypes:ValidatorType[]=[], identifier:String, initialText:String="") {
+    init(validatorTypes:[ValidatorType]=[], identifier:String, initialText:String="") {
         
         self.validationQueue = dispatch_queue_create("com.poetmountain.ValidationUnitQueue", DISPATCH_QUEUE_SERIAL)
         self.registeredValidationTypes = validatorTypes
@@ -37,6 +37,14 @@ class ValidationUnit {
         }
 
     }
+
+
+    func dealloc() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        dispatch_release(self.validationQueue);
+
+    }
+
     
     
     // Validation methods
@@ -54,7 +62,7 @@ class ValidationUnit {
         // first remove any old errors
         self.errors.removeAll()
         
-        var total_errors = Dictionary<String, Dictionary<String, String[]>>()
+        var total_errors = [String:[String:[String]]]() as NSDictionary
         
         if (!self.valid) {
             for validator_type:ValidatorType in self.registeredValidationTypes {
@@ -129,7 +137,10 @@ class ValidationUnit {
     
     @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
-        if let is_valid = notification.userInfo["status"] as? Bool {
+        let user_info = notification.userInfo as Dictionary
+        let is_valid = (user_info["status"] as NSNumber).boolValue as Bool
+    
+        if (is_valid) {
             self.validateText(self.lastTextValue)
         } else {
             self.valid = false

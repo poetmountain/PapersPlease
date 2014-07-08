@@ -24,7 +24,7 @@ class ValidatorType {
     var valid:Bool = false
     var sendsUpdates:Bool = false
     var identifier:NSString = ""
-    var validationStates:String[] = []
+    var validationStates:[String] = []
     
     init () {
         self.validationStates = [self.status.invalid]
