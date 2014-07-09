@@ -34,7 +34,7 @@ NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("valid
 @objc func validationUnitStatusChange(notification:NSNotification) {
     
     let unit:ValidationUnit = notification.object as ValidationUnit
-    NSLog("\(unit.identifier) is \(unit.valid)")
+    println("\(unit.identifier) is \(unit.valid)")
     
 }
 
@@ -56,9 +56,8 @@ NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("valid
 		
 // listen for manager's validation updates
 @objc func validationManagerStatusChange(notification:NSNotification) {
-  let user_info:NSDictionary = notification.userInfo
-  let status_num:NSNumber = user_info["status"] as NSNumber  
-  let is_valid:Bool = status_num.boolValue as Bool
+  let user_info = notification.userInfo as Dictionary
+  let is_valid = (user_info["status"] as NSNumber).boolValue as Bool
   
   if (!is_valid) {
   	let all_errors:NSDictionary = user_info["errors"] as NSDictionary
