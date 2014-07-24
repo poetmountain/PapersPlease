@@ -18,7 +18,7 @@ class ValidatorRegexType:ValidatorType {
         
         let regex:NSRegularExpression = NSRegularExpression.regularExpressionWithPattern(self.regexString, options: .CaseInsensitive, error: &error)
         
-        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16count))
+        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
         
         self.valid = (num_matches == 1)
         

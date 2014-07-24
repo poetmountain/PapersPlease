@@ -16,7 +16,7 @@ class ValidatorEmailType:ValidatorType {
         
         let regex:NSRegularExpression = NSRegularExpression.regularExpressionWithPattern("^[+\\w\\.\\-'!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", options: .CaseInsensitive, error: &error)
         
-        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16count))
+        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
         
         self.valid = (num_matches == 1)
         

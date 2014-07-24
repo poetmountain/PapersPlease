@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
                             
-    @IBOutlet var textField:UITextField = nil
-    @IBOutlet var matchTextField:UITextField = nil
+    @IBOutlet var textField:UITextField! = nil
+    @IBOutlet var matchTextField:UITextField! = nil
     
     var validationUnit:ValidationUnit!
     var validationManager:ValidationManager!

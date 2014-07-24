@@ -41,8 +41,6 @@ class ValidationUnit {
 
     func dealloc() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        dispatch_release(self.validationQueue);
-
     }
 
     
