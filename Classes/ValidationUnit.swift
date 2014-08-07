@@ -104,8 +104,8 @@ class ValidationUnit {
     
     // MARK: Utility methods
     
-    func validatorTypeForIdentifier(identifier:String) -> ValidatorType! {
-        var validator_type:ValidatorType! = nil
+    func validatorTypeForIdentifier(identifier:String) -> ValidatorType? {
+        var validator_type: ValidatorType?
         
         for type:ValidatorType in self.registeredValidationTypes {
             if (type.identifier == identifier) {
