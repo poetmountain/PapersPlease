@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         self.validationUnit = ValidationUnit(validatorTypes: unit_validator_types, identifier: "email")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusChange:"), name: ValidationUnitUpdateNotification, object: self.validationUnit)
         
-        self.validationUnit.validateText("nico@somewhere.com")
+        self.validationUnit.validateText("nico@somewhere")
         
         
         
@@ -53,7 +53,8 @@ class ViewController: UIViewController {
     @objc func validationManagerStatusChange(notification:NSNotification) {
         
         let user_info = notification.userInfo as Dictionary
-        let is_valid = (user_info["status"] as NSNumber).boolValue as Bool
+        let is_valid: Bool = user_info["status"]?.boolValue ?? false
+        
         println("manager is \(is_valid)")
         
         if (is_valid) {

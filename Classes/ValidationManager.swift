@@ -34,14 +34,10 @@ class ValidationManager {
     
     func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
         
-        var unit_identifier:String! = identifier?
-        if (!unit_identifier) {
-            // if no id passed in, create one
-            unit_identifier = "\(self.validationUnits.count+1)"
-        }
+        var unit_identifier:String = identifier ?? "\(self.validationUnits.count+1)"
         
         // create validation unit with passed-in types and store a reference
-        let unit:ValidationUnit = ValidationUnit(validatorTypes: validationTypes, identifier: unit_identifier!, initialText: initialText)
+        let unit:ValidationUnit = ValidationUnit(validatorTypes: validationTypes, identifier: unit_identifier, initialText: initialText)
         self.validationUnits[unit_identifier] = unit
         
         // add listener for object which will pass on text changes to validation unit
@@ -62,7 +58,7 @@ class ValidationManager {
     
     
     
-    // Utility methods
+    // MARK: Utility methods
     
     func unitForIdentifier(identifier:String) -> ValidationUnit? {
         let unit:ValidationUnit? = self.validationUnits[identifier]
@@ -95,7 +91,7 @@ class ValidationManager {
     
     
     
-    // Notification methods
+    // MARK: Notification methods
     
     @objc func unitUpdateNotificationHandler(notification:NSNotification) {
         

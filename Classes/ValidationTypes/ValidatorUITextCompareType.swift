@@ -13,7 +13,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     
     var lastStringValue:String = ""
 
-    init()  {
+    override init()  {
         super.init()
         self.sendsUpdates = true
     }
@@ -50,7 +50,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     }
     
     
-    // Notification methods
+    // MARK: Notification methods
     
     @objc func textDidChangeNotification(notification:NSNotification) {
 

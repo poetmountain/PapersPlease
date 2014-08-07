@@ -45,7 +45,7 @@ class ValidationUnit {
 
     
     
-    // Validation methods
+    // MARK: Validation methods
     
     func registerValidatorType (validatorType:ValidatorType) {
         self.registeredValidationTypes.append(validatorType)
@@ -102,7 +102,7 @@ class ValidationUnit {
     
     
     
-    // Utility methods
+    // MARK: Utility methods
     
     func validatorTypeForIdentifier(identifier:String) -> ValidatorType! {
         var validator_type:ValidatorType! = nil
@@ -119,7 +119,7 @@ class ValidationUnit {
     
     
     
-    // Notifications
+    // MARK: Notifications
     
     @objc func textDidChangeNotification(notification:NSNotification) {
         
@@ -136,7 +136,7 @@ class ValidationUnit {
     @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
         let user_info = notification.userInfo as Dictionary
-        let is_valid = (user_info["status"] as NSNumber).boolValue as Bool
+        let is_valid: Bool = user_info["status"]?.boolValue ?? false
     
         if (is_valid) {
             self.validateText(self.lastTextValue)
