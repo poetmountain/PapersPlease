@@ -135,15 +135,19 @@ class ValidationUnit {
     
     @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
-        let user_info = notification.userInfo as Dictionary
-        let is_valid: Bool = user_info["status"]?.boolValue ?? false
-    
-        if (is_valid) {
-            self.validateText(self.lastTextValue)
-        } else {
-            self.valid = false
-            self.validationComplete()
+        if let user_info = notification.userInfo {
+            if let status_num:NSNumber = user_info["status"] as? NSNumber {
+                let is_valid: Bool = status_num.boolValue ?? false
+                
+                if (is_valid) {
+                    self.validateText(self.lastTextValue)
+                } else {
+                    self.valid = false
+                    self.validationComplete()
+                }
+            }
         }
+
     }
     
 }

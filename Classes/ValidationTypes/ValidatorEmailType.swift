@@ -14,16 +14,20 @@ class ValidatorEmailType:ValidatorType {
         
         var error:NSError? = nil
         
-        let regex:NSRegularExpression = NSRegularExpression.regularExpressionWithPattern("^[+\\w\\.\\-'!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", options: .CaseInsensitive, error: &error)
+        self.valid = false
         
-        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+        if let regex = NSRegularExpression(pattern: "^[+\\w\\.\\-'!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", options: .CaseInsensitive, error: &error) {
         
-        self.valid = (num_matches == 1)
+            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+            
+            self.valid = (num_matches == 1)
+            
+        }
         
         // update states
         self.validationStates.removeAll()
         (self.valid) ? (self.validationStates.append(self.status.valid))
-            : (self.validationStates.append(self.status.invalid))
+                     : (self.validationStates.append(self.status.invalid))
         
         return self.valid
     }

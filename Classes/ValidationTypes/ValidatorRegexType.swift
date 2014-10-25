@@ -16,11 +16,15 @@ class ValidatorRegexType:ValidatorType {
         
         var error:NSError? = nil
         
-        let regex:NSRegularExpression = NSRegularExpression.regularExpressionWithPattern(self.regexString, options: .CaseInsensitive, error: &error)
+        self.valid = false
         
-        let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+        if let regex = NSRegularExpression(pattern: self.regexString, options: .CaseInsensitive, error: &error) {
         
-        self.valid = (num_matches == 1)
+            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+        
+            self.valid = (num_matches == 1)
+            
+        }
         
         // update states
         self.validationStates.removeAll()

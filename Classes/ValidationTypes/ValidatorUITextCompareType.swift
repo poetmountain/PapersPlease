@@ -55,11 +55,13 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     @objc func textDidChangeNotification(notification:NSNotification) {
 
         if (notification.name == UITextFieldTextDidChangeNotification) {
-            let text_field:UITextField = notification.object as UITextField
-            self.comparisonString = text_field.text
+            if let text_field:UITextField = notification.object as? UITextField {
+                self.comparisonString = text_field.text
+            }
         } else if (notification.name == UITextViewTextDidChangeNotification) {
-            let text_view:UITextView = notification.object as UITextView
-            self.comparisonString = text_view.text
+            if let text_view:UITextView = notification.object as? UITextView {
+                self.comparisonString = text_view.text
+            }
         }
         
         // because we are observing a UI text object to match against, we have to manually re-validate here

@@ -19,7 +19,7 @@ let ValidatorUpdateNotification:String = "ValidatorUpdateNotification"
 class ValidatorType {
     
     
-    let status = ValidationStatus()
+    var status = ValidationStatus()
     
     var valid:Bool = false
     var sendsUpdates:Bool = false

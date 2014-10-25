@@ -68,7 +68,7 @@ class ValidationManager {
     
     
     func checkValidationForText() {
-        
+    
         for (key, unit) in self.validationUnits {
             unit.validateText(unit.lastTextValue)
         }
@@ -101,14 +101,14 @@ class ValidationManager {
         // *** using NSDictionarys here because Xcode crashes on converted Swift's native Bool support in dicts
 
         // collect all unit errors
-        var total_errors = NSMutableDictionary.dictionary()
+        var total_errors = NSMutableDictionary()
         for (key, unit) in self.validationUnits {
             let errors = ["valid" : unit.valid, "errors" : unit.errors] as NSDictionary
             total_errors[unit.identifier] = errors
         }
         
         // post status update notification
-        let status_dict = ["status" : self.valid, "errors" : total_errors] as NSDictionary
+        let status_dict = ["status" : self.valid, "errors" : total_errors.copy()] as NSDictionary
         NSNotificationCenter.defaultCenter().postNotificationName(ValidationStatusNotification, object: self, userInfo: status_dict)
         
     }

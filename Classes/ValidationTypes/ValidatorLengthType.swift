@@ -27,10 +27,14 @@ class ValidatorLengthType:ValidatorType {
         self.maximumCharacters = maximumCharacters
     }
 
-    let compareStatus = LengthValidationStatus()
+    var compareStatus = LengthValidationStatus()
+    
     override var status:LengthValidationStatus {
         get {
             return compareStatus
+        }
+        set(status) {
+            self.status = status
         }
     }
     
