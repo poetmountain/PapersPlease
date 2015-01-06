@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         self.validationUnit = ValidationUnit(validatorTypes: unit_validator_types, identifier: "email")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusChange:"), name: ValidationUnitUpdateNotification, object: self.validationUnit)
         
-        self.validationUnit.validateText("nico@somewhere")
+        self.validationUnit.validateText("you@somewhere")
         
         
         let length_type:ValidatorLengthType = ValidatorLengthType(minimumCharacters:3, maximumCharacters:20)

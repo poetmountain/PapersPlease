@@ -16,6 +16,9 @@ class ValidatorEmailType:ValidatorType {
         
         self.valid = false
         
+        // while Unicode characters are permissible in user and domain sections of an e-mail address, they must be encoded and use IDNA.
+        // (see: http://en.wikipedia.org/wiki/Unicode_and_e-mail#Unicode_support_in_message_headings )
+        // this validation does not parse or check thusly-encoded strings for well-formedness (yet?)
         if let regex = NSRegularExpression(pattern: "^[+\\w\\.\\-'!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", options: .CaseInsensitive, error: &error) {
         
             let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))

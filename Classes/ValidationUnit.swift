@@ -17,6 +17,7 @@ class ValidationUnit {
     var errors = [String:[String]]()
     var identifier = ""
     var valid:Bool = false
+    var enabled:Bool = true
     let validationQueue:dispatch_queue_t
     
     var lastTextValue:String = ""
@@ -27,7 +28,6 @@ class ValidationUnit {
         self.registeredValidationTypes = validatorTypes
         self.identifier = identifier
         self.lastTextValue = initialText
-
 
         for type:ValidatorType in self.registeredValidationTypes {
             if (type.sendsUpdates) {
@@ -77,26 +77,32 @@ class ValidationUnit {
     
     func validateText(text:String) {
         
-        dispatch_async(self.validationQueue, {
-        
-            var num_valid = 0
-            
-            for type:ValidatorType in self.registeredValidationTypes {
-                let is_valid:Bool = type.isTextValid(text)
-                num_valid += Int(is_valid)
-            }
-            
-            let type_count:Int = self.registeredValidationTypes.count
-            (num_valid == type_count) ? (self.valid = true) : (self.valid = false)
-            
-            self.lastTextValue = text
-            
-            // send notification (on main queue, there be UI work)
-            dispatch_async(dispatch_get_main_queue(), {
-                self.validationComplete()
+        if (self.enabled) {
+            dispatch_async(self.validationQueue, {
+                [weak self] in
+                
+                if let strong_self = self {
+                    
+                    var num_valid = 0
+                    
+                    for type:ValidatorType in strong_self.registeredValidationTypes {
+                        let is_valid:Bool = type.isTextValid(text)
+                        num_valid += Int(is_valid)
+                    }
+                    
+                    let type_count:Int = strong_self.registeredValidationTypes.count
+                    (num_valid == type_count) ? (strong_self.valid = true) : (strong_self.valid = false)
+                    
+                    strong_self.lastTextValue = text
+                    
+                    // send notification (on main queue, there be UI work)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        strong_self.validationComplete()
+                    })
+                }
+                
             })
-            
-        })
+        }
         
     }
     
@@ -135,17 +141,21 @@ class ValidationUnit {
     
     @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
-        if let user_info = notification.userInfo {
-            if let status_num:NSNumber = user_info["status"] as? NSNumber {
-                let is_valid: Bool = status_num.boolValue ?? false
-                
-                if (is_valid) {
-                    self.validateText(self.lastTextValue)
-                } else {
-                    self.valid = false
-                    self.validationComplete()
+        if (self.enabled) {
+        
+            if let user_info = notification.userInfo {
+                if let status_num:NSNumber = user_info["status"] as? NSNumber {
+                    let is_valid: Bool = status_num.boolValue ?? false
+                    
+                    if (is_valid) {
+                        self.validateText(self.lastTextValue)
+                    } else {
+                        self.valid = false
+                        self.validationComplete()
+                    }
                 }
             }
+            
         }
 
     }

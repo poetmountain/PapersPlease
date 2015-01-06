@@ -16,6 +16,7 @@ class ValidationManager {
     
     var validationUnits = [String:ValidationUnit]()
     var valid:Bool = false
+    var identifierCounter = 0
     
     
     func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
@@ -34,7 +35,8 @@ class ValidationManager {
     
     func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
         
-        var unit_identifier:String = identifier ?? "\(self.validationUnits.count+1)"
+        // if no identifier passed in, generate one
+        let unit_identifier:String = identifier! ?? self.generateIdentifier()
         
         // create validation unit with passed-in types and store a reference
         let unit:ValidationUnit = ValidationUnit(validatorTypes: validationTypes, identifier: unit_identifier, initialText: initialText)
@@ -49,6 +51,31 @@ class ValidationManager {
 
         
         return unit
+    }
+    
+    
+    func addUnit(unit:ValidationUnit, identifier:String?) -> String {
+        
+        // if an identifier is passed in, that is used instead of the unit's identifier property
+        // if no identifier passed in and no identifier found on the unit, generate one
+        let unit_identifier:String = (identifier! ?? unit.identifier) ?? self.generateIdentifier()
+
+        self.validationUnits[unit_identifier] = unit
+
+        // listen for validation updates from unit
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("unitUpdateNotificationHandler:"), name: ValidationUnitUpdateNotification, object: unit)
+        
+        return unit_identifier
+    }
+    
+    
+    func removeUnitForIdentifier(identifier:String) {
+        
+        // remove validation update listener for this unit
+        let unit = self.unitForIdentifier(identifier)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ValidationUnitUpdateNotification, object: unit)
+        
+        self.validationUnits.removeValueForKey(identifier)
     }
     
     
@@ -67,6 +94,13 @@ class ValidationManager {
     }
     
     
+    func generateIdentifier() -> String {
+        let identifier = "\(self.identifierCounter++)"
+        
+        return identifier
+    }
+    
+    
     func checkValidationForText() {
     
         for (key, unit) in self.validationUnits {
@@ -80,7 +114,7 @@ class ValidationManager {
         var is_valid:Bool = true
         
         for (key, unit) in self.validationUnits {
-            if (!unit.valid) {
+            if (unit.enabled && !unit.valid) {
                 is_valid = false
                 break
             }
