@@ -10,11 +10,9 @@ PapersPlease is a flexible, extendable text validation library for iOS, written 
 
 ## Overview
 
-At its simplest, PapersPlease starts with an instance of ValidationUnit. Each ValidationUnit controls one or more ValidatorType objects, and ValidationUnit provides an overall validation state for the types registered with it. All validation types are subclasses of ValidatorType, and you can do the same to easily create your own validator types. 
+At its simplest, PapersPlease starts with an instance of a ValidatorType subclass. These classes provide the validation logic, and can be used directly if you just need a single validation test on your string. ValidatorType can be subclassed to provide your own custom validation logic. If you have a more complex validation test requiring several ValidatorType subclasses and need to determine an overall validation state for a string, use the ValidationUnit class. When you need to validate more than one string and determine a global validation state (e.g. a validation form), the ValidationManager class is useful. This class controls one or more ValidationUnit objects, providing an overall validation status and notification routing. This class also simplifies the validation of UIKit text input classes.
 
-Generally, a ValidationUnit handles the validation of one text object. When you are validating more than one text object, such as with a validation form, the ValidationManager class is useful. This class controls one or more ValidationUnit objects, providing an overall validation status and notification routing.
-
-While this library does function, the Swift language is in flux and so this library may change significantly over time until Swift gets to a stable place.
+While this library does function as stated, the Swift language is in flux and so this library may change significantly over time until Swift gets to a stable place.
 
 
 ### The basics
