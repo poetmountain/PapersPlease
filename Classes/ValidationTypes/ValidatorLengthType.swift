@@ -10,7 +10,7 @@ import Foundation
 
 let IgnoreLengthConstraint:Int = -1
 
-class LengthValidationStatus:ValidationStatus {
+class LengthValidationStatus : ValidationStatus {
     let minimumLengthError = "ValidationStatusMinimumLengthError"
     let maximumLengthError = "ValidationStatusMaximumLengthError"
 }
@@ -29,7 +29,7 @@ class ValidatorLengthType:ValidatorType {
 
     var compareStatus = LengthValidationStatus()
     
-    override var status:LengthValidationStatus {
+    override var status: ValidationStatus {
         get {
             return compareStatus
         }
@@ -48,7 +48,7 @@ class ValidatorLengthType:ValidatorType {
             min_valid = true
             
         } else if (self.minimumCharacters >= 0) {
-            (countElements(text) >= self.minimumCharacters) ? (min_valid = true) : (min_valid = false)
+            (count(text) >= self.minimumCharacters) ? (min_valid = true) : (min_valid = false)
         }
         
         // determine max validity
@@ -56,7 +56,7 @@ class ValidatorLengthType:ValidatorType {
             max_valid = true
             
         } else if (self.maximumCharacters >= 0 && self.maximumCharacters >= self.minimumCharacters) { // if max is less than min, the max constraint is ignored
-            (countElements(text) <= self.maximumCharacters) ? (max_valid = true) : (max_valid = false)
+            (count(text) <= self.maximumCharacters) ? (max_valid = true) : (max_valid = false)
         }
         
         (min_valid && max_valid) ? (valid = true) : (valid = false)
@@ -67,11 +67,12 @@ class ValidatorLengthType:ValidatorType {
         if (self.valid) {
             self.validationStates.append(self.status.valid)
         } else {
+            var length_status = self.status as! LengthValidationStatus
             if (!min_valid) {
-                self.validationStates.append(self.status.minimumLengthError)
+                self.validationStates.append(length_status.minimumLengthError)
             }
             if (!max_valid) {
-                self.validationStates.append(self.status.maximumLengthError)
+                self.validationStates.append(length_status.maximumLengthError)
             }
         }
         

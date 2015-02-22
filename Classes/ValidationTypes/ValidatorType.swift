@@ -13,11 +13,11 @@ class ValidationStatus {
     let invalid = "ValidationStatusInvalid"
 }
 
+
 let ValidatorUpdateNotification:String = "ValidatorUpdateNotification"
 
 
 class ValidatorType {
-    
     
     var status = ValidationStatus()
     

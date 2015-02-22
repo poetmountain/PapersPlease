@@ -20,13 +20,13 @@ class ValidationManager {
     
     
     func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
-        let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: textField.text, identifier: identifier?)
+        let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: textField.text, identifier: identifier)
         
         return unit
     }
     
     func registerTextView(textView:UITextView, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
-        let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: textView.text, identifier: identifier?)
+        let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: textView.text, identifier: identifier)
         
         return unit
     }
@@ -137,12 +137,12 @@ class ValidationManager {
         // collect all unit errors
         var total_errors = NSMutableDictionary()
         for (key, unit) in self.validationUnits {
-            let errors = ["valid" : unit.valid, "errors" : unit.errors] as NSDictionary
+            let errors = ["valid" : unit.valid, "errors" : unit.errors]
             total_errors[unit.identifier] = errors
         }
         
         // post status update notification
-        let status_dict = ["status" : self.valid, "errors" : total_errors.copy()] as NSDictionary
+        let status_dict = ["status" : self.valid, "errors" : total_errors.copy()]
         NSNotificationCenter.defaultCenter().postNotificationName(ValidationStatusNotification, object: self, userInfo: status_dict)
         
     }

@@ -60,7 +60,7 @@ class ValidationUnit {
         // first remove any old errors
         self.errors.removeAll()
         
-        var total_errors = [String:[String:[String]]]() as NSDictionary
+        var total_errors = [String:[String:[String]]]()
         
         if (!self.valid) {
             for validator_type:ValidatorType in self.registeredValidationTypes {
@@ -130,10 +130,10 @@ class ValidationUnit {
     @objc func textDidChangeNotification(notification:NSNotification) {
         
         if (notification.name == UITextFieldTextDidChangeNotification) {
-            let text_field:UITextField = notification.object as UITextField
+            let text_field:UITextField = notification.object as! UITextField
             self.validateText(text_field.text)
         } else if (notification.name == UITextViewTextDidChangeNotification) {
-            let text_view:UITextView = notification.object as UITextView
+            let text_view:UITextView = notification.object as! UITextView
             self.validateText(text_view.text)
         }
     }
