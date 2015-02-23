@@ -83,16 +83,16 @@ class ValidationUnit {
                 
                 if let strong_self = self {
                     
-                    var num_valid = 0
-                    
-                    for type:ValidatorType in strong_self.registeredValidationTypes {
-                        let is_valid:Bool = type.isTextValid(text)
-                        num_valid += Int(is_valid)
+                    // add up the number of valid validation tests (coercing each Bool result to an Int)
+                    let num_valid = strong_self.registeredValidationTypes.reduce(0) { (lastValue, type:ValidatorType) in
+                        lastValue + Int(type.isTextValid(text))
                     }
                     
-                    let type_count:Int = strong_self.registeredValidationTypes.count
+                    // use the number of total validations to set a global validation status
+                    let type_count = strong_self.registeredValidationTypes.count
                     (num_valid == type_count) ? (strong_self.valid = true) : (strong_self.valid = false)
                     
+                    // set the current text value to be the last value to prepare for the next validation request
                     strong_self.lastTextValue = text
                     
                     // send notification (on main queue, there be UI work)
