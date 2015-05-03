@@ -20,7 +20,7 @@ class ValidatorRegexType:ValidatorType {
         
         if let regex = NSRegularExpression(pattern: self.regexString, options: .CaseInsensitive, error: &error) {
         
-            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, count(text.utf16)))
         
             self.valid = (num_matches == 1)
             

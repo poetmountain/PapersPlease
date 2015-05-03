@@ -21,7 +21,7 @@ class ValidatorEmailType:ValidatorType {
         // this validation does not parse or check thusly-encoded strings for well-formedness (yet?)
         if let regex = NSRegularExpression(pattern: "^[+\\w\\.\\-'!#$%&*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", options: .CaseInsensitive, error: &error) {
         
-            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, text.utf16Count))
+            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, count(text.utf16)))
             
             self.valid = (num_matches == 1)
             
