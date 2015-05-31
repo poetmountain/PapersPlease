@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.license = { :type => 'MIT' }
   s.summary = 'A flexible, extensible text validation library written in Swift.'
   s.platform = :ios
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
   s.homepage = 'https://github.com/poetmountain/PapersPlease'
   s.social_media_url = 'https://twitter.com/petsound'
   s.authors = { 'Brett Walker' => 'brett@brettwalker.net' }
