@@ -48,7 +48,7 @@ class ValidatorLengthType:ValidatorType {
             min_valid = true
             
         } else if (self.minimumCharacters >= 0) {
-            (count(text) >= self.minimumCharacters) ? (min_valid = true) : (min_valid = false)
+            (text.utf16.count >= self.minimumCharacters) ? (min_valid = true) : (min_valid = false)
         }
         
         // determine max validity
@@ -56,7 +56,7 @@ class ValidatorLengthType:ValidatorType {
             max_valid = true
             
         } else if (self.maximumCharacters >= 0 && self.maximumCharacters >= self.minimumCharacters) { // if max is less than min, the max constraint is ignored
-            (count(text) <= self.maximumCharacters) ? (max_valid = true) : (max_valid = false)
+            (text.utf16.count <= self.maximumCharacters) ? (max_valid = true) : (max_valid = false)
         }
         
         (min_valid && max_valid) ? (valid = true) : (valid = false)
@@ -66,8 +66,10 @@ class ValidatorLengthType:ValidatorType {
         self.validationStates.removeAll()
         if (self.valid) {
             self.validationStates.append(self.status.valid)
+            
         } else {
-            var length_status = self.status as! LengthValidationStatus
+            let length_status = self.status as! LengthValidationStatus
+            
             if (!min_valid) {
                 self.validationStates.append(length_status.minimumLengthError)
             }

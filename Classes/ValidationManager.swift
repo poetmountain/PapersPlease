@@ -20,13 +20,15 @@ class ValidationManager {
     
     
     func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
-        let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: textField.text, identifier: identifier)
+        let initial_text = textField.text ?? ""
+        let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: initial_text, identifier: identifier)
         
         return unit
     }
     
     func registerTextView(textView:UITextView, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
-        let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: textView.text, identifier: identifier)
+        let initial_text = textView.text ?? ""
+        let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: initial_text, identifier: identifier)
         
         return unit
     }
@@ -103,7 +105,7 @@ class ValidationManager {
     
     func checkValidationForText() {
     
-        for (key, unit) in self.validationUnits {
+        for (_, unit) in self.validationUnits {
             unit.validateText(unit.lastTextValue)
         }
     }
@@ -113,7 +115,7 @@ class ValidationManager {
         
         var is_valid:Bool = true
         
-        for (key, unit) in self.validationUnits {
+        for (_, unit) in self.validationUnits {
             if (unit.enabled && !unit.valid) {
                 is_valid = false
                 break
@@ -135,8 +137,8 @@ class ValidationManager {
         // *** using NSDictionarys here because Xcode crashes on converted Swift's native Bool support in dicts
 
         // collect all unit errors
-        var total_errors = NSMutableDictionary()
-        for (key, unit) in self.validationUnits {
+        let total_errors = NSMutableDictionary()
+        for (_, unit) in self.validationUnits {
             let errors = ["valid" : unit.valid, "errors" : unit.errors]
             total_errors[unit.identifier] = errors
         }

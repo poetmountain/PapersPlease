@@ -14,13 +14,11 @@ class ValidatorRegexType:ValidatorType {
     
     override func isTextValid(text: String) -> Bool {
         
-        var error:NSError? = nil
-        
         self.valid = false
         
-        if let regex = NSRegularExpression(pattern: self.regexString, options: .CaseInsensitive, error: &error) {
+        if let regex = try? NSRegularExpression(pattern: self.regexString, options: .CaseInsensitive) {
         
-            let num_matches:Int = regex.numberOfMatchesInString(text, options: .ReportProgress, range: NSMakeRange(0, count(text.utf16)))
+            let num_matches:Int = regex.numberOfMatchesInString(text, options:[], range: NSMakeRange(0, text.utf16.count))
         
             self.valid = (num_matches == 1)
             

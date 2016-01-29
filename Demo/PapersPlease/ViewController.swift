@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     @objc func validationUnitStatusChange(notification:NSNotification) {
         
         let unit:ValidationUnit = notification.object as! ValidationUnit
-        println("email validation: \(unit.identifier) is \(unit.valid) for \(unit.lastTextValue)")
+        print("email validation: \(unit.identifier) is \(unit.valid) for \(unit.lastTextValue)")
         
     }
     
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
             if let status_num:NSNumber = user_info["status"] as? NSNumber {
                 let is_valid: Bool = status_num.boolValue ?? false
                 
-                println("manager is \(is_valid)")
+                print("manager is \(is_valid)")
                 
                 if (is_valid) {
                     self.matchTextField.backgroundColor = UIColor.greenColor()
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
                     let all_errors:NSDictionary = user_info["errors"] as! NSDictionary
                     let textfield:NSDictionary = all_errors["textfield"] as! NSDictionary
                     let text_errors:NSDictionary = textfield["errors"] as! NSDictionary
-                    println("textfield errors: \(text_errors)")
+                    print("textfield errors: \(text_errors)")
                     
                 }
             }

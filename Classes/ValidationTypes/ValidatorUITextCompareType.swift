@@ -36,7 +36,8 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         // add listener for object which will pass on text changes to validator unit
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("textDidChangeNotification:"), name: UITextFieldTextDidChangeNotification, object: textField)
         
-        self.comparisonString = textField.text
+        guard let text = textField.text else { return }
+        self.comparisonString = text
         
     }
     
@@ -45,7 +46,8 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         // add listener for object which will pass on text changes to validator unit
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("textDidChangeNotification:"), name: UITextViewTextDidChangeNotification, object: textView)
         
-        self.comparisonString = textView.text
+        guard let text = textView.text else { return }
+        self.comparisonString = text
         
     }
     
@@ -55,13 +57,14 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     @objc func textDidChangeNotification(notification:NSNotification) {
 
         if (notification.name == UITextFieldTextDidChangeNotification) {
-            if let text_field:UITextField = notification.object as? UITextField {
-                self.comparisonString = text_field.text
-            }
+            guard let text_field:UITextField = notification.object as? UITextField else { return }
+            guard let text = text_field.text else { return }
+            self.comparisonString = text
+            
         } else if (notification.name == UITextViewTextDidChangeNotification) {
-            if let text_view:UITextView = notification.object as? UITextView {
-                self.comparisonString = text_view.text
-            }
+            guard let text_view:UITextView = notification.object as? UITextView else { return }
+            guard let text = text_view.text else { return }
+            self.comparisonString = text
         }
         
         // because we are observing a UI text object to match against, we have to manually re-validate here

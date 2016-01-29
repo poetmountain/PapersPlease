@@ -130,32 +130,32 @@ class ValidationUnit {
     @objc func textDidChangeNotification(notification:NSNotification) {
         
         if (notification.name == UITextFieldTextDidChangeNotification) {
-            let text_field:UITextField = notification.object as! UITextField
-            self.validateText(text_field.text)
+            guard let text_field:UITextField = notification.object as? UITextField else { return }
+            guard let text = text_field.text else { return }
+            self.validateText(text)
+    
         } else if (notification.name == UITextViewTextDidChangeNotification) {
-            let text_view:UITextView = notification.object as! UITextView
-            self.validateText(text_view.text)
+            guard let text_view:UITextView = notification.object as? UITextView else { return }
+            guard let text = text_view.text else { return }
+            self.validateText(text)
         }
     }
     
     
     @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
-        if (self.enabled) {
+        if (!self.enabled) { return }
         
-            if let user_info = notification.userInfo {
-                if let status_num:NSNumber = user_info["status"] as? NSNumber {
-                    let is_valid: Bool = status_num.boolValue ?? false
-                    
-                    if (is_valid) {
-                        self.validateText(self.lastTextValue)
-                    } else {
-                        self.valid = false
-                        self.validationComplete()
-                    }
-                }
-            }
+        guard let user_info = notification.userInfo else { return }
+        guard let status_num:NSNumber = user_info["status"] as? NSNumber else { return }
+        let is_valid: Bool = status_num.boolValue ?? false
+        
+        if (is_valid) {
+            self.validateText(self.lastTextValue)
             
+        } else {
+            self.valid = false
+            self.validationComplete()
         }
 
     }
