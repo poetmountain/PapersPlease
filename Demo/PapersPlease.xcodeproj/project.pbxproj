@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B64C33A1C5B166C00009A77 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B64C3391C5B166C00009A77 /* Launch Screen.storyboard */; };
 		8BF4DD3B196A3850005A1EAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4DD3A196A3850005A1EAD /* AppDelegate.swift */; };
 		8BF4DD3D196A3850005A1EAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF4DD3C196A3850005A1EAD /* ViewController.swift */; };
 		8BF4DD40196A3850005A1EAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BF4DD3E196A3850005A1EAD /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B64C3391C5B166C00009A77 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		8BF4DD35196A3850005A1EAD /* PapersPlease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PapersPlease.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BF4DD39196A3850005A1EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BF4DD3A196A3850005A1EAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				8BF4DD3E196A3850005A1EAD /* Main.storyboard */,
 				8BF4DD41196A3850005A1EAD /* Images.xcassets */,
 				8BF4DD38196A3850005A1EAD /* Supporting Files */,
+				8B64C3391C5B166C00009A77 /* Launch Screen.storyboard */,
 			);
 			path = PapersPlease;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B64C33A1C5B166C00009A77 /* Launch Screen.storyboard in Resources */,
 				8BF4DD40196A3850005A1EAD /* Main.storyboard in Resources */,
 				8BF4DD42196A3850005A1EAD /* Images.xcassets in Resources */,
 			);
