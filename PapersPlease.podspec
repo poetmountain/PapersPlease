@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'PapersPlease'
-  s.version = '0.2.2'
+  s.version = '0.3.0'
   s.license = { :type => 'MIT' }
   s.summary = 'A flexible, extensible text validation library written in Swift.'
   s.platform = :ios
@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.authors = { 'Brett Walker' => 'brett@brettwalker.net' }
   s.source = { :git => 'https://github.com/poetmountain/PapersPlease.git', :tag => s.version }
   s.source_files = 'Classes/**/*.swift'
-  s.requires_arc = true
+  s.requires_arc = true  
 end
