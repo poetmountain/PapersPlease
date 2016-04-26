@@ -97,7 +97,8 @@ class ValidationManager {
     
     
     func generateIdentifier() -> String {
-        let identifier = "\(self.identifierCounter++)"
+        identifierCounter += 1
+        let identifier = "\(identifierCounter)"
         
         return identifier
     }
