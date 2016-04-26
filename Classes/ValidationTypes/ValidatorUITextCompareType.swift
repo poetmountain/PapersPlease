@@ -34,7 +34,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     func registerTextFieldToMatch(textField:UITextField) {
         
         // add listener for object which will pass on text changes to validator unit
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("textDidChangeNotification:"), name: UITextFieldTextDidChangeNotification, object: textField)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidatorUITextCompareType.textDidChangeNotification(_:)), name: UITextFieldTextDidChangeNotification, object: textField)
         
         guard let text = textField.text else { return }
         self.comparisonString = text
@@ -44,7 +44,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     func registerTextViewToMatch(textView:UITextView) {
         
         // add listener for object which will pass on text changes to validator unit
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("textDidChangeNotification:"), name: UITextViewTextDidChangeNotification, object: textView)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidatorUITextCompareType.textDidChangeNotification(_:)), name: UITextViewTextDidChangeNotification, object: textView)
         
         guard let text = textView.text else { return }
         self.comparisonString = text
