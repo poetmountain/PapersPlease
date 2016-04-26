@@ -31,7 +31,7 @@ class ValidationUnit {
 
         for type:ValidatorType in self.registeredValidationTypes {
             if (type.sendsUpdates) {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusUpdatedNotification:"), name: ValidatorUpdateNotification, object: type)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidationUnit.validationUnitStatusUpdatedNotification(_:)), name: ValidatorUpdateNotification, object: type)
                 type.isTextValid(self.lastTextValue)
             }
         }

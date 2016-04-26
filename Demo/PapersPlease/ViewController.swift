@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         let unit_validator_types = [email_type]
         
         self.validationUnit = ValidationUnit(validatorTypes: unit_validator_types, identifier: "email")
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationUnitStatusChange:"), name: ValidationUnitUpdateNotification, object: self.validationUnit)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.validationUnitStatusChange(_:)), name: ValidationUnitUpdateNotification, object: self.validationUnit)
         
         self.validationUnit.validateText("you@somewhere")
         
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         self.validationManager = ValidationManager()
         self.validationManager.registerTextField(self.textField, validationTypes: [length_type, compare_type], identifier: "textfield")
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("validationManagerStatusChange:"), name: ValidationStatusNotification, object: self.validationManager)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.validationManagerStatusChange(_:)), name: ValidationStatusNotification, object: self.validationManager)
         
     }
     

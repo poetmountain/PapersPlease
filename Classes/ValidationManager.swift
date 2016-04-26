@@ -45,11 +45,11 @@ class ValidationManager {
         self.validationUnits[unit_identifier] = unit
         
         // add listener for object which will pass on text changes to validation unit
-        NSNotificationCenter.defaultCenter().addObserver(unit, selector: Selector("textDidChangeNotification:"), name: objectNotificationType, object: object)
+        NSNotificationCenter.defaultCenter().addObserver(unit, selector: #selector(ValidationUnit.textDidChangeNotification(_:)), name: objectNotificationType, object: object)
         
         
         // listen for validation updates from unit
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("unitUpdateNotificationHandler:"), name: ValidationUnitUpdateNotification, object: unit)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidationManager.unitUpdateNotificationHandler(_:)), name: ValidationUnitUpdateNotification, object: unit)
 
         
         return unit
@@ -65,7 +65,7 @@ class ValidationManager {
         self.validationUnits[unit_identifier] = unit
 
         // listen for validation updates from unit
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("unitUpdateNotificationHandler:"), name: ValidationUnitUpdateNotification, object: unit)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidationManager.unitUpdateNotificationHandler(_:)), name: ValidationUnitUpdateNotification, object: unit)
         
         return unit_identifier
     }
