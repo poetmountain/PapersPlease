@@ -38,7 +38,7 @@ class ValidationManager {
     func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
         
         // if no identifier passed in, generate one
-        let unit_identifier:String = identifier! ?? self.generateIdentifier()
+        let unit_identifier:String = identifier ?? self.generateIdentifier()
         
         // create validation unit with passed-in types and store a reference
         let unit:ValidationUnit = ValidationUnit(validatorTypes: validationTypes, identifier: unit_identifier, initialText: initialText)
@@ -60,7 +60,7 @@ class ValidationManager {
         
         // if an identifier is passed in, that is used instead of the unit's identifier property
         // if no identifier passed in and no identifier found on the unit, generate one
-        let unit_identifier:String = (identifier! ?? unit.identifier) ?? self.generateIdentifier()
+        let unit_identifier:String = (identifier ?? unit.identifier) ?? self.generateIdentifier()
 
         self.validationUnits[unit_identifier] = unit
 
