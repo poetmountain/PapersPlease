@@ -1,3 +1,8 @@
+0.3.1
+=====
+* Swift 2.2 compatibility
+* Other bugfixes
+
 0.3.0
 =====
 * Swift 2.0 compatibility

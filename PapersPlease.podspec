@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'PapersPlease'
-  s.version = '0.3.0'
+  s.version = '0.3.1'
   s.license = { :type => 'MIT' }
   s.summary = 'A flexible, extensible text validation library written in Swift.'
   s.platform = :ios

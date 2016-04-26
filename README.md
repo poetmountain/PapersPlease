@@ -15,6 +15,18 @@ At its simplest, PapersPlease starts with an instance of a ValidatorType subclas
 While this library does function as stated, the Swift language is in flux and so this library may change significantly over time until Swift gets to a stable place.
 
 
+### Installation
+
+If you use CocoaPods:
+
+##### Podfile
+```ruby
+pod "PapersPlease", "~> 0.3.0"
+```
+
+Or add the Classes directory to your project.
+
+
 ### The basics
 
 Here's a basic example, creating a string length constraint which passes validation while the string is between 4 and 8 characters.
