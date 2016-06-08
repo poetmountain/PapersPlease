@@ -8,37 +8,36 @@
 
 import Foundation
 
-class ValidationStatus {
-    let valid = "ValidationStatusValid"
-    let invalid = "ValidationStatusInvalid"
+public enum ValidationStatus: String {
+    case Valid = "ValidationStatusValid"
+    case Invalid = "ValidationStatusInvalid"
 }
 
 
-let ValidatorUpdateNotification:String = "ValidatorUpdateNotification"
+public let ValidatorUpdateNotification:String = "ValidatorUpdateNotification"
 
 
-class ValidatorType {
+public class ValidatorType {
     
-    var status = ValidationStatus()
+    internal(set) public var valid:Bool = false
+    internal(set) public var sendsUpdates:Bool = false
+    public var identifier:NSString = ""
+    internal(set) public var validationStates:[String] = []
+
     
-    var valid:Bool = false
-    var sendsUpdates:Bool = false
-    var identifier:NSString = ""
-    var validationStates:[String] = []
-    
-    init () {
-        self.validationStates = [self.status.invalid]
+    public init () {
+        self.validationStates = [ValidationStatus.Invalid.rawValue]
     }
     
     
-    func isTextValid(text:String) -> Bool {
+    public func isTextValid(text:String) -> Bool {
         self.valid = true
         self.validationStates.removeAll()
-        self.validationStates.append(self.status.valid)
+        self.validationStates.append(ValidationStatus.Valid.rawValue)
         
         return self.valid
     }
-    
+
     class func type() -> String {
         return "ValidationTypeBase"
     }

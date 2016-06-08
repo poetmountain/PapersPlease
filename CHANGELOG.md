@@ -1,3 +1,7 @@
+0.3.2
+=====
+* Fixed public access issues outside Module context
+
 0.3.1
 =====
 * Swift 2.2 compatibility

@@ -9,24 +9,27 @@
 import Foundation
 import UIKit
 
-let ValidationStatusNotification:String = "ValidationStatusNotification"
+public let ValidationStatusNotification:String = "ValidationStatusNotification"
 
 
-class ValidationManager {
+public class ValidationManager {
     
-    var validationUnits = [String:ValidationUnit]()
-    var valid:Bool = false
+    internal(set) public var validationUnits = [String:ValidationUnit]()
+    internal(set) public var valid:Bool = false
     var identifierCounter = 0
     
+    public init() {
+        
+    }
     
-    func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
+    public func registerTextField(textField:UITextField, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
         let initial_text = textField.text ?? ""
         let unit:ValidationUnit = self.registerObject(textField, validationTypes: validationTypes, objectNotificationType: UITextFieldTextDidChangeNotification, initialText: initial_text, identifier: identifier)
         
         return unit
     }
     
-    func registerTextView(textView:UITextView, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
+    public func registerTextView(textView:UITextView, validationTypes:[ValidatorType]=[], identifier:String?) -> ValidationUnit {
         let initial_text = textView.text ?? ""
         let unit:ValidationUnit = self.registerObject(textView, validationTypes: validationTypes, objectNotificationType: UITextViewTextDidChangeNotification, initialText: initial_text, identifier: identifier)
         
@@ -35,7 +38,7 @@ class ValidationManager {
     
     
     
-    func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
+    public func registerObject(object:AnyObject, validationTypes:[ValidatorType]=[], objectNotificationType:String, initialText:String, identifier:String?) -> ValidationUnit {
         
         // if no identifier passed in, generate one
         let unit_identifier:String = identifier ?? self.generateIdentifier()
@@ -56,7 +59,7 @@ class ValidationManager {
     }
     
     
-    func addUnit(unit:ValidationUnit, identifier:String?) -> String {
+    public func addUnit(unit:ValidationUnit, identifier:String?) -> String {
         
         // if an identifier is passed in, that is used instead of the unit's identifier property
         // if no identifier passed in and no identifier found on the unit, generate one
@@ -71,7 +74,7 @@ class ValidationManager {
     }
     
     
-    func removeUnitForIdentifier(identifier:String) {
+    public func removeUnitForIdentifier(identifier:String) {
         
         // remove validation update listener for this unit
         let unit = self.unitForIdentifier(identifier)
@@ -89,7 +92,7 @@ class ValidationManager {
     
     // MARK: Utility methods
     
-    func unitForIdentifier(identifier:String) -> ValidationUnit? {
+    public func unitForIdentifier(identifier:String) -> ValidationUnit? {
         let unit:ValidationUnit? = self.validationUnits[identifier]
         
         return unit

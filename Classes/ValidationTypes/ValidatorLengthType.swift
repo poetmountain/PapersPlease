@@ -8,37 +8,27 @@
 
 import Foundation
 
-let IgnoreLengthConstraint:Int = -1
+public let IgnoreLengthConstraint:Int = -1
 
-class LengthValidationStatus : ValidationStatus {
-    let minimumLengthError = "ValidationStatusMinimumLengthError"
-    let maximumLengthError = "ValidationStatusMaximumLengthError"
+public enum LengthValidationStatus : String {
+    case MinimumLengthError = "ValidationStatusMinimumLengthError"
+    case MaximumLengthError = "ValidationStatusMaximumLengthError"
 }
 
 
-class ValidatorLengthType:ValidatorType {
+public class ValidatorLengthType:ValidatorType {
     
-    var minimumCharacters:Int = IgnoreLengthConstraint
-    var maximumCharacters:Int = IgnoreLengthConstraint
+    public var minimumCharacters:Int = IgnoreLengthConstraint
+    public var maximumCharacters:Int = IgnoreLengthConstraint
     
-    init(minimumCharacters:Int, maximumCharacters:Int)  {
+    public init(minimumCharacters:Int, maximumCharacters:Int)  {
         super.init()
         self.minimumCharacters = minimumCharacters
         self.maximumCharacters = maximumCharacters
     }
-
-    var compareStatus = LengthValidationStatus()
     
-    override var status: ValidationStatus {
-        get {
-            return compareStatus
-        }
-        set(status) {
-            self.status = status
-        }
-    }
     
-    override func isTextValid(text: String) -> Bool {
+    public override func isTextValid(text: String) -> Bool {
         
         var min_valid = true
         var max_valid = true
@@ -65,25 +55,23 @@ class ValidatorLengthType:ValidatorType {
         // update states
         self.validationStates.removeAll()
         if (self.valid) {
-            self.validationStates.append(self.status.valid)
+            self.validationStates.append(ValidationStatus.Valid.rawValue)
             
         } else {
-            let length_status = self.status as! LengthValidationStatus
             
             if (!min_valid) {
-                self.validationStates.append(length_status.minimumLengthError)
+                self.validationStates.append(LengthValidationStatus.MinimumLengthError.rawValue)
             }
             if (!max_valid) {
-                self.validationStates.append(length_status.maximumLengthError)
+                self.validationStates.append(LengthValidationStatus.MaximumLengthError.rawValue)
             }
         }
         
         
         return self.valid
     }
-    
-    
-    class override func type() -> String {
+
+    public class override func type() -> String {
         return "ValidationTypeLength"
     }
     

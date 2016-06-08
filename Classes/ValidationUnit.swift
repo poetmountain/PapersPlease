@@ -9,20 +9,19 @@
 import Foundation
 import UIKit
 
-let ValidationUnitUpdateNotification:String = "ValidationUnitUpdateNotification"
+public let ValidationUnitUpdateNotification:String = "ValidationUnitUpdateNotification"
 
-class ValidationUnit {
+public class ValidationUnit {
     
-    var registeredValidationTypes:[ValidatorType] = []
-    var errors = [String:[String]]()
-    var identifier = ""
-    var valid:Bool = false
-    var enabled:Bool = true
+    internal(set) public var registeredValidationTypes:[ValidatorType] = []
+    internal(set) public var errors = [String:[String]]()
+    public var identifier = ""
+    internal(set) public var valid:Bool = false
+    public var enabled:Bool = true
     let validationQueue:dispatch_queue_t
+    internal(set) public var lastTextValue:String = ""
     
-    var lastTextValue:String = ""
-    
-    init(validatorTypes:[ValidatorType]=[], identifier:String, initialText:String="") {
+    public init(validatorTypes:[ValidatorType]=[], identifier:String, initialText:String="") {
         
         self.validationQueue = dispatch_queue_create("com.poetmountain.ValidationUnitQueue", DISPATCH_QUEUE_SERIAL)
         self.registeredValidationTypes = validatorTypes
@@ -47,16 +46,16 @@ class ValidationUnit {
     
     // MARK: Validation methods
     
-    func registerValidatorType (validatorType:ValidatorType) {
+    public func registerValidatorType(validatorType:ValidatorType) {
         self.registeredValidationTypes.append(validatorType)
     }
     
-    func clearValidatorTypes () {
+    public func clearValidatorTypes() {
         self.registeredValidationTypes.removeAll()
     }
     
     
-    func validationComplete () {
+    func validationComplete() {
         // first remove any old errors
         self.errors.removeAll()
         
@@ -75,7 +74,7 @@ class ValidationUnit {
     }
     
     
-    func validateText(text:String) {
+    public func validateText(text:String) {
         
         if (self.enabled) {
             dispatch_async(self.validationQueue, {
@@ -110,7 +109,7 @@ class ValidationUnit {
     
     // MARK: Utility methods
     
-    func validatorTypeForIdentifier(identifier:String) -> ValidatorType? {
+    public func validatorTypeForIdentifier(identifier:String) -> ValidatorType? {
         var validator_type: ValidatorType?
         
         for type:ValidatorType in self.registeredValidationTypes {
@@ -127,7 +126,7 @@ class ValidationUnit {
     
     // MARK: Notifications
     
-    @objc func textDidChangeNotification(notification:NSNotification) {
+    @objc public func textDidChangeNotification(notification:NSNotification) {
         
         if (notification.name == UITextFieldTextDidChangeNotification) {
             guard let text_field:UITextField = notification.object as? UITextField else { return }
@@ -142,7 +141,7 @@ class ValidationUnit {
     }
     
     
-    @objc func validationUnitStatusUpdatedNotification(notification:NSNotification) {
+    @objc public func validationUnitStatusUpdatedNotification(notification:NSNotification) {
         
         if (!self.enabled) { return }
         

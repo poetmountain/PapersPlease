@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-class ValidatorUITextCompareType:ValidatorStringCompareType {
+public class ValidatorUITextCompareType:ValidatorStringCompareType {
     
     var lastStringValue:String = ""
 
-    override init()  {
+    public override init()  {
         super.init()
         self.sendsUpdates = true
     }
@@ -22,7 +22,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    override func isTextValid(text: String) -> Bool {
+    public override func isTextValid(text: String) -> Bool {
         
         super.isTextValid(text)
         self.lastStringValue = text
@@ -31,7 +31,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
     }
     
     
-    func registerTextFieldToMatch(textField:UITextField) {
+    public func registerTextFieldToMatch(textField:UITextField) {
         
         // add listener for object which will pass on text changes to validator unit
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidatorUITextCompareType.textDidChangeNotification(_:)), name: UITextFieldTextDidChangeNotification, object: textField)
@@ -41,7 +41,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         
     }
     
-    func registerTextViewToMatch(textView:UITextView) {
+    public func registerTextViewToMatch(textView:UITextView) {
         
         // add listener for object which will pass on text changes to validator unit
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ValidatorUITextCompareType.textDidChangeNotification(_:)), name: UITextViewTextDidChangeNotification, object: textView)
@@ -51,10 +51,13 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         
     }
     
+    public class override func type() -> String {
+        return "ValidationTypeUITextCompare"
+    }
     
     // MARK: Notification methods
     
-    @objc func textDidChangeNotification(notification:NSNotification) {
+    @objc public func textDidChangeNotification(notification:NSNotification) {
 
         if (notification.name == UITextFieldTextDidChangeNotification) {
             guard let text_field:UITextField = notification.object as? UITextField else { return }
@@ -76,12 +79,7 @@ class ValidatorUITextCompareType:ValidatorStringCompareType {
         NSNotificationCenter.defaultCenter().postNotificationName(ValidatorUpdateNotification, object: self, userInfo: dict)
         
     }
-    
-    
-    
-    class override func type() -> String {
-        return "ValidationTypeUITextCompare"
-    }
+
     
 
 }

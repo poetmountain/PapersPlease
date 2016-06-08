@@ -8,9 +8,9 @@
 
 import Foundation
 
-class ValidatorEmailType:ValidatorType {
+public class ValidatorEmailType:ValidatorType {
     
-    override func isTextValid(text: String) -> Bool {
+    public override func isTextValid(text: String) -> Bool {
         
         self.valid = false
         
@@ -28,13 +28,13 @@ class ValidatorEmailType:ValidatorType {
 
         // update states
         self.validationStates.removeAll()
-        (self.valid) ? (self.validationStates.append(self.status.valid))
-                     : (self.validationStates.append(self.status.invalid))
+        (self.valid) ? (self.validationStates.append(ValidationStatus.Valid.rawValue))
+                     : (self.validationStates.append(ValidationStatus.Invalid.rawValue))
         
         return self.valid
     }
     
-    class override func type() -> String {
+    public class override func type() -> String {
         return "ValidationTypeEmail"
     }
     

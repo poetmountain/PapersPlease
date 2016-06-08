@@ -8,17 +8,17 @@
 
 import Foundation
 
-class ValidatorStringCompareType:ValidatorType {
+public class ValidatorStringCompareType:ValidatorType {
     
-    enum ComparisonType {
+    public enum ComparisonType {
         case Equals, NotEquals
     }
     
-    var comparisonString:String = ""
-    var comparisonType:ComparisonType = .Equals
+    public var comparisonString:String = ""
+    public var comparisonType:ComparisonType = .Equals
     
     
-    override func isTextValid(text: String) -> Bool {
+    public override func isTextValid(text: String) -> Bool {
         
         if (self.comparisonType == .Equals) {
             self.valid = (text == self.comparisonString)
@@ -28,9 +28,8 @@ class ValidatorStringCompareType:ValidatorType {
         
         return self.valid
     }
-    
-    class override func type() -> String {
+
+    public class override func type() -> String {
         return "ValidationTypeStringCompare"
     }
-
 }
